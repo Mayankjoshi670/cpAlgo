@@ -1,0 +1,8 @@
+# Ignore all files with .exc extension
+*.exc
+
+# Ignore all files with .cph extension
+*.cph
+
+# Ignore the .vscode folder
+.vscode/
