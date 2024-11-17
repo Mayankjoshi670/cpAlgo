@@ -5,11 +5,19 @@ using namespace std;
 #define vvi vector<vector<int>>
 #define ll long long 
 #define int long long int 
+const int N = 1e5+10;
+int bit[N];
+int sum(int i){
+	int ans = 0;
+	for(; i > 0; i -= (i&-i))
+		ans += bit[i];
+	return ans;
+}
+void update(int i, int x){
+	for(; i < N; i += (i&-i))
+		bit[i] += x;
+}
 void findAns() {
-    int n, k  ;  
-    cin>> n>> k  ; 
-    vi arr(n); 
-    for(auto & it : arr)cin>> it ; 
     
 }
 

@@ -6,16 +6,19 @@ using namespace std;
 #define ll long long 
 #define int long long int 
 void findAns() {
-    int n, k  ;  
-    cin>> n>> k  ; 
-    vi arr(n); 
+    int n, k ; 
+    cin>> n >> k ; 
+    vi arr(n) ; 
     for(auto & it : arr)cin>> it ; 
     
 }
 
 int32_t main() {
     fast_io;
-     
+     int t; 
+     cin>>t ; 
+     while(t--){
         findAns();
+     }
     
 }
