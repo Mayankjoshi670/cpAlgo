@@ -16,7 +16,7 @@ void findAns(d a ) {
         res = a - f(a)/fd(a) ; 
         if(f(res) == 0 ){
         cout <<  res ; 
-        break ; 
+        return ; 
         }
         a = res ; 
     } 
