@@ -5,112 +5,85 @@ using namespace std;
 #define vvi vector<vector<int>>
 #define ll long long 
 #define int long long int 
+const int N = 2e5 + 10;
+ 
 
-// DSU data structure with path compression and union by rank
-class DSU {
-public:
-    vi parent, rank;
-    
-    DSU(int n) {
-        parent.resize(n + 1);
-        rank.resize(n + 1, 0);
-        iota(parent.begin(), parent.end(), 0);
-    }
-    
-    int find(int u) {
-        if (parent[u] != u) {
-            parent[u] = find(parent[u]);  // Path compression
+ class DSU{
+    public : 
+    vector<int>parent , rank ; 
+    DSU(int n ){
+        parent.resize(n+1) ;
+        rank.resize(n+1, 0); 
+        for(int i = 1 ; i<= n ; i++){
+            parent[i] = i ; 
         }
-        return parent[u];
     }
-    
-    void unite(int u, int v) {
-        int rootU = find(u);
-        int rootV = find(v);
-        
-        if (rootU != rootV) {
-            // Union by rank
-            if (rank[rootU] > rank[rootV]) {
-                parent[rootV] = rootU;
-            } else if (rank[rootU] < rank[rootV]) {
-                parent[rootU] = rootV;
-            } else {
-                parent[rootV] = rootU;
-                rank[rootU]++;
+
+        int findP(int x){
+            if(x!= parent[x]){
+                parent[x] = findP(parent[x]) ; 
             }
+            return parent[x] ; 
         }
-    }
-};
+        bool join(int x , int y ){
+            int xRoot = findP(x) ; 
+            int yRoot = findP(y) ; 
+            if(xRoot == yRoot)return false ; 
+            else if(rank[xRoot]> rank[yRoot])parent[yRoot] =xRoot ; 
+            else if(rank[xRoot]< rank[yRoot])parent[xRoot] = yRoot ;
+            else {
+                parent[yRoot] = xRoot ; 
+                rank[xRoot]++ ; 
+            }
+            return true ; 
+        }
+    };
 
 void findAns() {
     int n, m1, m2;
     cin >> n >> m1 >> m2;
-    
-    DSU dsuF(n), dsuG(n);
-    
-    vector<pair<int, int>> edgesF(m1), edgesG(m2);
-    
-    // Input for graph F
-    for (int i = 0; i < m1; ++i) {
-        int u, v;
-        cin >> u >> v;
-        edgesF[i] = {u, v};
-        dsuF.unite(u, v);  // Unite nodes in F
-    }
-    
-    // Input for graph G
-    for (int i = 0; i < m2; ++i) {
-        int u, v;
-        cin >> u >> v;
-        edgesG[i] = {u, v};
-        dsuG.unite(u, v);  // Unite nodes in G
-    }
-    
-    // Count connected components in G for each vertex
-    map<int, vector<int>> componentsInG;
-    for (int i = 1; i <= n; ++i) {
-        componentsInG[dsuG.find(i)].push_back(i);
-    }
+ 
+    DSU dsuf(n), dsug(n) ; 
 
-    // For each component in G, we need to determine the number of components in F
-    int removeOperations = 0, addOperations = 0;
-    
-    for (auto& comp : componentsInG) {
-        set<int> nodesInF;
-        
-        // Collect edges of F that are within this component
-        for (auto& edge : edgesF) {
-            int u = edge.first, v = edge.second;
-            if (dsuG.find(u) == comp.first && dsuG.find(v) == comp.first) {
-                nodesInF.insert(dsuF.find(u));
-                nodesInF.insert(dsuF.find(v));
-            }
-        }
-        
-        // Calculate the number of add operations
-        int componentCountInF = nodesInF.size();
-        if (componentCountInF > 1) {
-            addOperations += componentCountInF - 1;
-        }
+    vector<pair<int, int>> edgF(m1), edgG(m2);
+    for (int i = 0; i < m1; ++i)
+    {
+        cin >> edgF[i].first >> edgF[i].second;
     }
-    
-    // Count remove operations for edges in F that should be removed
-    for (auto& edge : edgesF) {
-        int u = edge.first, v = edge.second;
-        if (dsuG.find(u) != dsuG.find(v)) {
-            removeOperations++;
-        }
+    for (int i = 0; i < m2; ++i)
+    {
+        cin >> edgG[i].first >> edgG[i].second;
+        dsug.join(edgG[i].first, edgG[i].second);
     }
+  int ans = 0 ; 
+  for(int i = 0 ; i< m1 ; i++){
+    int u = edgF[i].first ; 
+    int v = edgF[i].second ; 
+    if(dsug.findP(u) == dsug.findP(v)){
+        dsuf.join(u , v) ; 
+    }
+    else ans++ ;
+  }
+
+  for(int i = 0 ; i< m2 ; i++){
+    int u = edgG[i].first ; 
+    int v = edgG[i].second ;
+    if(dsuf.findP(u)!= dsuf.findP(v)){
+        dsuf.join(u , v) ; 
+        ans++ ; 
+    }
+  }
+  cout << ans << "\n";
+
     
-    // The result for the test case is the sum of the remove and add operations
-    cout << removeOperations + addOperations << '\n';
 }
 
 int32_t main() {
     fast_io;
     int t;
     cin >> t;
-    while (t--) {
+    while (t-- > 0) {
         findAns();
-    }     
+    }
+    return 0;
 }
