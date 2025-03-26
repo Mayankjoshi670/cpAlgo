@@ -6,10 +6,20 @@ using namespace std;
 #define ll long long 
 #define int long long int 
 void findAns() {
-int n ; 
-cin>> n ; 
-int  k = n/2 ; 
-cout << ((n%2 ==1) ?2*(k+1)*(k+2) : (k+1)*(k+1)) <<endl;     
+string s ; 
+cin>> s ; 
+int wcnt = 0  , breakRes = 0  , ans = 0 ; 
+for(int i = 0 ; i< s.size() ; i++){
+    if(s[i] == 'o'){
+        breakRes +=wcnt ; 
+    }
+    else if (i > 0 and s[i-1] == 'v') {
+        wcnt++ ; 
+        ans+= breakRes ; 
+    }
+
+}   
+cout << ans << endl  ;  
 }
 
 int32_t main() {

@@ -6,15 +6,23 @@ using namespace std;
 #define ll long long 
 #define int long long int 
 void findAns() {
-int n ; 
-cin>> n ; 
-int  k = n/2 ; 
-cout << ((n%2 ==1) ?2*(k+1)*(k+2) : (k+1)*(k+1)) <<endl;     
+int a , b ; 
+cin>>a >> b; 
+if(abs(a - b )<= 1){
+    cout << a+b << endl; 
+}    
+else {
+    cout << 2*max(a , b )-1 << endl ; 
+}
 }
 
 int32_t main() {
     fast_io;
-     
+    int t = 1 ; 
+    cin>> t ; 
+    while(t-->0){
         findAns();
+    }     
     
 }
+ 
