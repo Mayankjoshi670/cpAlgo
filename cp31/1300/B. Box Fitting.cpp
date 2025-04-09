@@ -5,75 +5,31 @@ using namespace std;
 #define vvi vector<vector<int>>
 #define ll long long 
 #define int long long int 
-// bool   solve( vi & temp ,int n , int mid  , int w ){
-//    int i = 0 , j = n-1 ; 
-//     while(mid-->0 ){
-//      int total = 0 ; 
-//         while(i <= j ){
-//             if(total + temp[j] > w ){
-//                 if(total+ temp[i]> w ){
-//                     break ; 
-//                 }
-//                 else {
-//                     total+= temp[i] ; 
-//                     i++ ; 
-//                 }
-//             }
-//             else {
-//                 total+= temp[j] ; 
-//                 j-- ; 
-//             }
-//      } 
-//      if(i> j ){
-//         //  means they cross each other and we still have mid 
-//         return true  ; 
-//      }  
-//     }
-//     return false ; 
-// }
-
-bool solve(vector<int> temp, int n, int rows, int w) {
-    multiset<int, greater<int>> ms(temp.begin(), temp.end());
-
-    while (rows-- > 0 && !ms.empty()) {
-        int rem = w;
-
-        auto it = ms.begin();
-        while (it != ms.end()) {
-            if (*it <= rem) {
-                rem -= *it;
-                it = ms.erase(it);
-            } else {
-                ++it;
-            }
-        }
-    }
-
-    return ms.empty();
-}
-
-
 void findAns() {
-int n , w ; 
-cin>> n>> w ; 
-vi temp(n) ; 
-for(auto & it : temp)cin>> it ; 
-sort(begin(temp) , end(temp)) ; 
-
-int low  = 1 ; 
-int high = n ; 
-int ans = -1 ; 
-while(low <= high ){
-    int mid = low + (high - low )/2 ;
-    if(solve(temp , n , mid  , w )){
-        ans = mid ; 
-    high = mid -1 ; 
+  int n , k  ;
+  cin>> n >> k ; 
+  multiset<int>st ; 
+  for(int i = 0 ; i< n;i++){
+    int no ;
+    cin>> no ; 
+    st.insert(no) ; 
+  }  
+  int ans = 1 ; 
+  int high = k ;
+  while(!st.empty()){
+    auto itr = st.upper_bound(high) ; 
+    if(itr == st.begin()){
+        high = k ; 
+        ans++ ; 
     }
     else {
-        low = mid+1  ;
+        itr-- ;
+        int val = *itr ; 
+        high -= val ; 
+        st.erase(itr) ; 
     }
-}
-cout << ans << '\n' ; 
+  }
+  cout<< ans << '\n' ; 
 }
 
 int32_t main() {
