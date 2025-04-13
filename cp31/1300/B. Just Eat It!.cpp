@@ -4,51 +4,30 @@ using namespace std;
 #define vi vector<int>
 #define vvi vector<vector<int>>
 #define ll long long 
-#define int long long int 
-void findAns() {
-int n ; 
-cin >> n ; 
-vi arr(n ) ; 
-for(auto & it  : arr)cin>> it ; 
-int ans = 0 ; 
-int res = accumulate(arr.begin() , arr.end() , 0 ) ; 
-int sum = 0 ; 
-int cnt = 0 ; 
-int maxcnt = 0  ;
-// for(int i = 0 ; i< n ; i++){
-//     if(sum <= 0){
-//         sum = 0 ;
-//         cnt= 0 ; 
-//     }
-//     sum+= arr[i] ;
-//     cnt++ ; 
-//     maxcnt = max(cnt , maxcnt) ; 
-//     ans = max(ans , sum) ;
-
-// }    
-// if(sum == ans){
-//     //  either both equal in len 
-//     if(maxcnt == n ){
-//         cout << "YES" << endl ;
-//     }
-//     else {
-//         cout << "NO" << endl ;
-//     }
-// }
-// else {
-//     if(sum > ans){
-//         cout << "YES" << endl ;
-//     }
-//     else {
-//         cout << "NO" << endl ;
-//     }
-// }
-// // cout << ans << " " << sum ; 
-// return ; 
-
-
-for(int i = 0 ; i< n ; i++)
+#define int long long int
+int solve(vi &given , int n ){
+    int maxi = LLONG_MIN , ans = LLONG_MIN ; 
+    for(int i = 0  ; i< n ; i++){
+        maxi = max(maxi , 0LL)+given[i];
+        ans = max(ans ,maxi) ;
+    }
+    return ans ;
 }
+ 
+
+void findAns() {
+    int n;
+    cin >> n;
+    vi given(n);
+    for (auto &it : given) cin >> it;
+
+    ll total = accumulate(given.begin(), given.end(), 0LL);
+    ll maxSubarray = solve(given, n-1);
+    reverse(begin(given) , end(given)) ; 
+maxSubarray = max(maxSubarray , solve(given , n -1)) ;
+    cout << ((total > maxSubarray) ? "YES\n" : "NO\n");
+}
+
 
 int32_t main() {
     fast_io;
